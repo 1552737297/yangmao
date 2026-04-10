@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>拼豆图纸生成器（多品牌色号·背景策略·实时预览）</title>
+<title>拼豆图纸生成器（多品牌色号·背景策略·实时预览·修复版）</title>
 <!-- 引入智能背景移除库 -->
 <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.0/dist/background-removal.umd.js"></script>
 <style>
@@ -42,7 +42,7 @@ th{background:#f1f5f9}
 <body>
 <div class="container">
   <div class="header">
-    <h1>🧩 拼豆图纸生成器（多品牌色号·背景策略·实时预览）</h1>
+    <h1>🧩 拼豆图纸生成器（多品牌色号·背景策略·实时预览·修复版）</h1>
     <p>支持MARD/COCO/漫漫/盼盼/咪小窝 · AI去背景 · 平滑控制 · 导出颜色清单</p>
   </div>
   <div class="card">
@@ -61,8 +61,7 @@ th{background:#f1f5f9}
         <button class="btn btn-presets" onclick="app.setSize(104,104)">104×104</button>
         <button class="btn btn-presets" onclick="app.setSize(150,150)">150×150</button>
         <button class="btn btn-presets" onclick="app.setSize(200,200)">200×200</button>
-      </div>
-      
+      </div>     
       <div>自定义宽×高：<input type="number" id="gridWidth" value="29" min="1" max="300" style="width:70px"> × <input type="number" id="gridHeight" value="29" min="1" max="300" style="width:70px"></div>
       
       <div>品牌色号：
@@ -85,13 +84,13 @@ th{background:#f1f5f9}
           <option value="replaceColor">替换为指定颜色</option>
         </select>
       </div>
-      <div id="replaceColorDiv" style="display:none">替换颜色：<input type="color" id="replaceColor" value="#ffffff"></div>    
+      <div id="replaceColorDiv" style="display:none">替换颜色：<input type="color" id="replaceColor" value="#ffffff"></div>
+      
       <div>去白阈值：<input type="number" id="whiteThreshold" value="240" min="200" max="255" style="width:70px"></div>
       <div><label><input type="checkbox" id="flipX"> 左右反转</label></div>
       <div><label><input type="checkbox" id="showLegend" checked> 右侧显示统计面板</label></div>
       <div>导出缩放：<select id="exportScale"><option value="1">1倍</option><option value="2" selected>2倍</option><option value="4">4倍</option></select></div>
     </div>
-
     <div class="grid-tool">
       <strong>🎯 网格图片识别（不等比例识别）</strong><br>
       <div class="flex" style="margin-top:8px">
@@ -157,7 +156,7 @@ const MARD_PALETTE = [
   {code:"B19", r:38, g:138, b:142}, {code:"B20", r:203, g:236, b:207}, {code:"B21", r:24, g:97, b:106},
   {code:"B22", r:10, g:66, b:65}, {code:"B23", r:52, g:59, b:26}, {code:"B24", r:232, g:250, b:166},
   {code:"B25", r:78, g:132, b:109},
-     {code:"C1", r:240, g:254, b:228}, {code:"C2", r:171, g:248, b:254}, {code:"C3", r:26, g:224, b:247},
+   {code:"C1", r:240, g:254, b:228}, {code:"C2", r:171, g:248, b:254}, {code:"C3", r:26, g:224, b:247},
   {code:"C4", r:68, g:205, b:251}, {code:"C5", r:6, g:170, b:223}, {code:"C6", r:84, g:167, b:233},
   {code:"C7", r:57, g:119, b:202}, {code:"C8", r:15, g:82, b:189}, {code:"C9", r:51, g:73, b:195},
   {code:"C10", r:60, g:188, b:227}, {code:"C11", r:42, g:222, b:211}, {code:"C12", r:30, g:51, b:78},
@@ -166,7 +165,7 @@ const MARD_PALETTE = [
   {code:"C19", r:24, g:134, b:157}, {code:"C20", r:26, g:112, b:169}, {code:"C21", r:188, g:221, b:252},
   {code:"C22", r:107, g:177, b:187}, {code:"C23", r:200, g:226, b:253}, {code:"C24", r:126, g:197, b:249},
   {code:"C25", r:169, g:232, b:224},
-  {code:"D1", r:172, g:183, b:239}, {code:"D2", r:134, g:141, b:211}, {code:"D3", r:53, g:84, b:175},
+    {code:"D1", r:172, g:183, b:239}, {code:"D2", r:134, g:141, b:211}, {code:"D3", r:53, g:84, b:175},
   {code:"D4", r:22, g:45, b:123}, {code:"D5", r:179, g:78, b:198}, {code:"D6", r:179, g:123, b:220},
   {code:"D7", r:135, g:88, b:169}, {code:"D8", r:227, g:210, b:254}, {code:"D9", r:213, g:185, b:244},
   {code:"D10", r:48, g:26, b:73}, {code:"D11", r:190, g:185, b:226}, {code:"D12", r:220, g:153, b:206},
@@ -175,7 +174,7 @@ const MARD_PALETTE = [
   {code:"D19", r:216, g:194, b:217}, {code:"D20", r:154, g:53, b:173}, {code:"D21", r:148, g:5, b:149},
   {code:"D22", r:56, g:56, b:154}, {code:"D23", r:234, g:219, b:248}, {code:"D24", r:118, g:138, b:225},
   {code:"D25", r:73, g:80, b:194},
-    {code:"E1", r:246, g:212, b:203}, {code:"E2", r:252, g:193, b:221}, {code:"E3", r:246, g:189, b:232},
+  {code:"E1", r:246, g:212, b:203}, {code:"E2", r:252, g:193, b:221}, {code:"E3", r:246, g:189, b:232},
   {code:"E4", r:232, g:100, b:158}, {code:"E5", r:240, g:86, b:159}, {code:"E6", r:235, g:65, b:114},
   {code:"E7", r:197, g:54, b:116}, {code:"E8", r:253, g:219, b:233}, {code:"E9", r:227, g:118, b:199},
   {code:"E10", r:209, g:59, b:149}, {code:"E11", r:247, g:218, b:212}, {code:"E12", r:246, g:147, b:191},
@@ -183,7 +182,7 @@ const MARD_PALETTE = [
   {code:"E16", r:251, g:244, b:236}, {code:"E17", r:247, g:227, b:236}, {code:"E18", r:249, g:200, b:219},
   {code:"E19", r:246, g:187, b:209}, {code:"E20", r:215, g:198, b:206}, {code:"E21", r:192, g:157, b:164},
   {code:"E22", r:179, g:140, b:159}, {code:"E23", r:147, g:125, b:138}, {code:"E24", r:222, g:190, b:229},
-  {code:"F1", r:254, g:147, b:129}, {code:"F2", r:246, g:61, b:75}, {code:"F3", r:238, g:78, b:62},
+    {code:"F1", r:254, g:147, b:129}, {code:"F2", r:246, g:61, b:75}, {code:"F3", r:238, g:78, b:62},
   {code:"F4", r:251, g:42, b:64}, {code:"F5", r:225, g:3, b:40}, {code:"F6", r:145, g:54, b:53},
   {code:"F7", r:145, g:25, b:50}, {code:"F8", r:187, g:1, b:38}, {code:"F9", r:224, g:103, b:122},
   {code:"F10", r:135, g:70, b:40}, {code:"F11", r:89, g:35, b:35}, {code:"F12", r:243, g:83, b:107},
@@ -192,14 +191,14 @@ const MARD_PALETTE = [
   {code:"F19", r:190, g:69, b:74}, {code:"F20", r:198, g:148, b:149}, {code:"F21", r:242, g:184, b:198},
   {code:"F22", r:247, g:195, b:208}, {code:"F23", r:237, g:128, b:108}, {code:"F24", r:224, g:157, b:175},
   {code:"F25", r:232, g:72, b:84},
-     {code:"G1", r:255, g:228, b:211}, {code:"G2", r:252, g:198, b:172}, {code:"G3", r:241, g:196, b:165},
+  {code:"G1", r:255, g:228, b:211}, {code:"G2", r:252, g:198, b:172}, {code:"G3", r:241, g:196, b:165},
   {code:"G4", r:220, g:179, b:135}, {code:"G5", r:231, g:179, b:78}, {code:"G6", r:227, g:160, b:20},
   {code:"G7", r:152, g:92, b:58}, {code:"G8", r:113, g:61, b:47}, {code:"G9", r:228, g:182, b:133},
   {code:"G10", r:218, g:140, b:66}, {code:"G11", r:218, g:200, b:152}, {code:"G12", r:254, g:201, b:147},
   {code:"G13", r:178, g:113, b:75}, {code:"G14", r:139, g:104, b:76}, {code:"G15", r:246, g:248, b:227},
   {code:"G16", r:242, g:216, b:193}, {code:"G17", r:119, g:84, b:78}, {code:"G18", r:255, g:227, b:213},
   {code:"G19", r:221, g:125, b:65}, {code:"G20", r:165, g:69, b:47}, {code:"G21", r:179, g:133, b:97},
-  {code:"H1", r:255, g:255, b:255}, {code:"H2", r:251, g:251, b:251}, {code:"H3", r:180, g:180, b:180},
+    {code:"H1", r:255, g:255, b:255}, {code:"H2", r:251, g:251, b:251}, {code:"H3", r:180, g:180, b:180},
   {code:"H4", r:135, g:135, b:135}, {code:"H5", r:70, g:70, b:72}, {code:"H6", r:44, g:44, b:44},
   {code:"H7", r:1, g:1, b:1}, {code:"H8", r:231, g:214, b:220}, {code:"H9", r:239, g:237, b:238},
   {code:"H10", r:235, g:235, b:235}, {code:"H11", r:205, g:205, b:205}, {code:"H12", r:253, g:246, b:238},
@@ -207,19 +206,18 @@ const MARD_PALETTE = [
   {code:"H16", r:27, g:18, b:19}, {code:"H17", r:240, g:238, b:239}, {code:"H18", r:252, g:255, b:246},
   {code:"H19", r:242, g:238, b:229}, {code:"H20", r:150, g:160, b:159}, {code:"H21", r:248, g:251, b:230},
   {code:"H22", r:202, g:202, b:210}, {code:"H23", r:155, g:156, b:148},
-      {code:"M1", r:187, g:198, b:182}, {code:"M2", r:144, g:153, b:148}, {code:"M3", r:105, g:126, b:128},
+  {code:"M1", r:187, g:198, b:182}, {code:"M2", r:144, g:153, b:148}, {code:"M3", r:105, g:126, b:128},
   {code:"M4", r:224, g:212, b:188}, {code:"M5", r:209, g:204, b:175}, {code:"M6", r:176, g:170, b:134},
   {code:"M7", r:176, g:167, b:150}, {code:"M8", r:174, g:127, b:130}, {code:"M9", r:166, g:136, b:98},
   {code:"M10", r:196, g:179, b:187}, {code:"M11", r:158, g:117, b:146}, {code:"M12", r:100, g:74, b:81},
   {code:"M13", r:199, g:146, b:102}, {code:"M14", r:194, g:116, b:100}, {code:"M15", r:116, g:125, b:122}
 ];
-
 // 其他品牌色卡（示例，仅用于演示，实际需要真实数据）
-const COCO_PALETTE = MARD_PALETTE.slice(0, 30); // 示例
+const COCO_PALETTE = MARD_PALETTE.slice(0, 30);
 const MANMAN_PALETTE = MARD_PALETTE.slice(0, 30);
 const PANPAN_PALETTE = MARD_PALETTE.slice(0, 30);
 const MIXIAOWO_PALETTE = MARD_PALETTE.slice(0, 30);
-    
+
 function getPaletteByBrand(brand) {
   switch(brand) {
     case 'MARD': return MARD_PALETTE;
@@ -230,7 +228,6 @@ function getPaletteByBrand(brand) {
     default: return MARD_PALETTE;
   }
 }
-
 function rgbToHex(r,g,b){return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function hexToRgb(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)];}
 function colorDist(c1,c2){const dr=c1.r-c2.r, dg=c1.g-c2.g, db=c1.b-c2.b; return dr*dr+dg*dg+db*db;}
@@ -243,6 +240,7 @@ function matchColorWithPalette(r,g,b,palette){
   if(!best) best = {code:null, r:r, g:g, b:b};
   return best;
 }
+
 // 布局常量
 const COORD_SIZE = 28;
 const CELL_SIZE = 32;
@@ -259,30 +257,14 @@ const app = {
   pixels: [],
   history: [],
   historyIndex: -1,
-  pendingBgRemove: false, // 防止重复AI调用
-  
+  pendingBgRemove: false,
+  aiProcessed: false,   // 标记是否已通过AI处理过原图
   init(){
+    this.setupAutoRefresh();  // 先定义 autoRefresh
     this.bindEvents();
     this.loadDemoData();
-    this.setupAutoRefresh();
-    // 显示/隐藏替换颜色控件
-    document.getElementById('bgStrategy').addEventListener('change', () => {
-      const div = document.getElementById('replaceColorDiv');
-      div.style.display = document.getElementById('bgStrategy').value === 'replaceColor' ? 'inline-flex' : 'none';
-      this.autoRefresh();
-    });
-    document.getElementById('brandSelect').addEventListener('change', () => this.autoRefresh());
-    document.getElementById('smoothStrength').addEventListener('input', (e) => {
-      document.getElementById('smoothVal').innerText = e.target.value;
-      this.autoRefresh();
-    });
-    document.getElementById('whiteThreshold').addEventListener('input', () => this.autoRefresh());
-    document.getElementById('flipX').addEventListener('change', () => this.autoRefresh());
-    document.getElementById('gridWidth').addEventListener('input', () => this.autoRefresh());
-    document.getElementById('gridHeight').addEventListener('input', () => this.autoRefresh());
-    document.getElementById('replaceColor').addEventListener('input', () => this.autoRefresh());
-    document.getElementById('aiRemoveBtn').onclick = () => this.applyAiBackgroundThenRefresh();
-  },  
+  },
+  
   setupAutoRefresh(){
     let timer = null;
     const refresh = () => {
@@ -291,18 +273,36 @@ const app = {
         if(this.originalImage && !this.pendingBgRemove) this.generateGrid();
       }, 500);
     };
-    // 将refresh绑定到所有可触发自动刷新的控件（已绑定部分）
-    // 额外绑定一些可能遗漏的
-    document.getElementById('brandSelect').addEventListener('change', refresh);
-    document.getElementById('smoothStrength').addEventListener('input', refresh);
-    document.getElementById('whiteThreshold').addEventListener('input', refresh);
-    document.getElementById('flipX').addEventListener('change', refresh);
-    document.getElementById('gridWidth').addEventListener('input', refresh);
-    document.getElementById('gridHeight').addEventListener('input', refresh);
-    document.getElementById('replaceColor').addEventListener('input', refresh);
-    document.getElementById('bgStrategy').addEventListener('change', refresh);
     this.autoRefresh = refresh;
-  },  
+    
+    // 初始化平滑强度显示
+    const smoothSlider = document.getElementById('smoothStrength');
+    document.getElementById('smoothVal').innerText = smoothSlider.value;    
+    // 统一绑定所有需要自动刷新的控件
+    const autoElements = ['brandSelect', 'smoothStrength', 'whiteThreshold', 'flipX', 'gridWidth', 'gridHeight', 'replaceColor', 'bgStrategy'];
+    autoElements.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', refresh);
+    });
+    // 特殊处理checkbox的change事件
+    document.getElementById('flipX').addEventListener('change', refresh);
+    document.getElementById('bgStrategy').addEventListener('change', () => {
+      const div = document.getElementById('replaceColorDiv');
+      div.style.display = document.getElementById('bgStrategy').value === 'replaceColor' ? 'inline-flex' : 'none';
+      refresh();
+    });
+    // 尺寸变化监听
+    document.getElementById('gridWidth').addEventListener('change', refresh);
+    document.getElementById('gridHeight').addEventListener('change', refresh);
+  },
+  bindEvents(){
+    document.getElementById('fileInput').onchange = e => this.handleImageUpload(e);
+    document.getElementById('gridFileInput').onchange = e => this.handleGridImageUpload(e);
+    const canvas = document.getElementById('gridCanvas');
+    canvas.addEventListener('click', (e) => this.onCanvasClick(e));
+    document.getElementById('aiRemoveBtn').onclick = () => this.applyAiBackgroundThenRefresh();
+  },
+  
   showLoading(show, msg = "处理中..."){
     const el = document.getElementById('loading');
     const msgEl = document.getElementById('loadingMsg');
@@ -312,8 +312,7 @@ const app = {
     } else {
       el.classList.remove('show');
     }
-  },
-  
+  },  
   async applyAiBackgroundThenRefresh(){
     if(!this.originalImage){
       alert("请先上传图片");
@@ -337,6 +336,7 @@ const app = {
         img.src = url;
       });
       this.originalImage = img;
+      this.aiProcessed = true;   // 标记已AI处理
       URL.revokeObjectURL(url);
       this.showLoading(false);
       alert("背景去除完成！");
@@ -355,6 +355,7 @@ const app = {
     const img = new Image();
     img.onload = () => {
       this.originalImage = img;
+      this.aiProcessed = false;  // 新上传的图片未经过AI处理
       this.generateGrid();
     };
     img.src = URL.createObjectURL(file);
@@ -376,7 +377,6 @@ const app = {
     document.getElementById('gridHeight').value = h;
     this.autoRefresh();
   },
-  
   clearGrid(){
     const canvas = document.getElementById('gridCanvas');
     const ctx = canvas.getContext('2d');
@@ -384,13 +384,20 @@ const app = {
     this.pixels = [];
     this.updateStat();
   },
+  
   async generateGrid(){
     if(!this.originalImage){
       return;
     }
-    this.showLoading(true, "生成网格中...");
-    await new Promise(r => setTimeout(r, 10));
+    // 如果背景策略为AI去背景，且原图未经过AI处理，则自动调用AI
+    const bgStrategy = document.getElementById('bgStrategy').value;
+    if(bgStrategy === 'aiRemove' && !this.aiProcessed && !this.pendingBgRemove){
+      await this.applyAiBackgroundThenRefresh();
+      return;  // 递归调用会在AI完成后再次进入generateGrid
+    }
     
+    this.showLoading(true, "生成网格中...");
+    await new Promise(r => setTimeout(r, 10));    
     const width = parseInt(document.getElementById('gridWidth').value);
     const height = parseInt(document.getElementById('gridHeight').value);
     if(isNaN(width) || width<1 || isNaN(height) || height<1){
@@ -400,34 +407,25 @@ const app = {
     this.currentWidth = width;
     this.currentHeight = height;
     
-    // 背景策略
-    const bgStrategy = document.getElementById('bgStrategy').value;
     const whiteThreshold = parseInt(document.getElementById('whiteThreshold').value);
     const replaceColorHex = document.getElementById('replaceColor').value;
     const replaceRgb = hexToRgb(replaceColorHex);
     const flip = document.getElementById('flipX').checked;
     const brand = document.getElementById('brandSelect').value;
     const palette = getPaletteByBrand(brand);
-    const smoothStrength = parseFloat(document.getElementById('smoothStrength').value);   
-    // 处理原始图片（可能已应用AI去背景）
+    const smoothStrength = parseFloat(document.getElementById('smoothStrength').value);
+    
     let sourceImage = this.originalImage;
-    if(bgStrategy === 'replaceColor'){
-      // 替换背景：将图片中所有像素替换为指定颜色？不，这是背景策略，通常是替换背景区域，但为了简化，我们直接对整个图片进行背景替换？
-      // 实际用户可能希望将图片中某种背景色替换，但这里我们用去白阈值类似逻辑？暂时简单处理：使用去白阈值逻辑但替换为指定颜色
-      // 更合理的：先做去白阈值，再将白色区域替换为指定颜色。由于时间，简化：如果选择替换颜色，则使用去白阈值并将白色替换为目标色。
-    }
     
     const offCanvas = document.createElement('canvas');
     offCanvas.width = width;
     offCanvas.height = height;
     const ctx = offCanvas.getContext('2d');
-    // 平滑强度控制：设置图像平滑属性，强度0最锐利，强度2最平滑
     ctx.imageSmoothingEnabled = smoothStrength > 0;
     ctx.imageSmoothingQuality = smoothStrength > 1 ? 'high' : (smoothStrength > 0.5 ? 'medium' : 'low');
     ctx.drawImage(sourceImage, 0, 0, width, height);
     const imgData = ctx.getImageData(0, 0, width, height);
-    const data = imgData.data;
-    
+    const data = imgData.data;   
     const newPixels = [];
     for(let y=0; y<height; y++){
       const row = [];
@@ -443,8 +441,6 @@ const app = {
           if(r>whiteThreshold && g>whiteThreshold && b>whiteThreshold){
             r = replaceRgb[0]; g = replaceRgb[1]; b = replaceRgb[2];
           }
-        } else if(bgStrategy === 'aiRemove'){
-          // AI去背景已经在上层处理，此处无需额外操作
         }
         // 色卡匹配
         const matched = matchColorWithPalette(r,g,b,palette);
@@ -462,7 +458,7 @@ const app = {
     this.renderCanvas();
     this.updateStat();
     this.showLoading(false);
-  },
+  },  
   getColorStats(){
     if(!this.pixels.length) return [];
     const height = this.pixels.length;
@@ -482,8 +478,7 @@ const app = {
   calcPanelHeight(stats){
     if(!stats.length) return 0;
     return 40 + stats.length * PANEL_ROW_H + 10;
-  },
-  
+  },  
   drawStatsPanel(ctx, stats, startX, startY, panelWidth, maxAvailableHeight){
     if(!stats.length) return;
     const neededHeight = this.calcPanelHeight(stats);
@@ -515,7 +510,7 @@ const app = {
       y += PANEL_ROW_H;
     }
     ctx.restore();
-  },
+  },  
   renderFull(pixels, ctx, drawCoordinates = true, includePanel = true){
     const height = pixels.length;
     if(height===0) return;
@@ -546,7 +541,7 @@ const app = {
         const p = pixels[y][x];
         ctx.fillStyle = `rgb(${p.r},${p.g},${p.b})`;
         ctx.fillRect(COORD_SIZE + x*CELL_SIZE, COORD_SIZE + y*CELL_SIZE, CELL_SIZE-1, CELL_SIZE-1);
-        let displayText = p.code ? p.code : rgbToHex(p.r,p.g,p.b).slice(1);
+                let displayText = p.code ? p.code : rgbToHex(p.r,p.g,p.b).slice(1);
         ctx.font = "bold 11px monospace";
         ctx.fillStyle = (p.r*0.299 + p.g*0.587 + p.b*0.114) > 160 ? "#000" : "#fff";
         ctx.fillText(displayText, COORD_SIZE + x*CELL_SIZE + 4, COORD_SIZE + y*CELL_SIZE + 20);
@@ -570,7 +565,7 @@ const app = {
       ctx.lineTo(COORD_SIZE + gridWidth, pos);
       ctx.stroke();
     }
-       ctx.lineWidth = 2;
+    ctx.lineWidth = 2;
     ctx.strokeStyle = "#555555";
     for(let i=0; i<=width; i+=GRID_STEP){
       const pos = COORD_SIZE + i * CELL_SIZE;
@@ -586,7 +581,7 @@ const app = {
       ctx.lineTo(COORD_SIZE + gridWidth, pos);
       ctx.stroke();
     }
-    ctx.restore();
+        ctx.restore();
     if(drawCoordinates){
       ctx.fillStyle = "#333333";
       ctx.font = "12px sans-serif";
@@ -607,7 +602,7 @@ const app = {
       const maxPanelHeight = gridHeight + panelExtraHeight;
       this.drawStatsPanel(ctx, stats, panelStartX, panelStartY, panelWidth, maxPanelHeight);
     }
-  },  
+  },
   renderCanvas(){
     const height = this.pixels.length;
     if(height===0) return;
@@ -623,8 +618,7 @@ const app = {
       return;
     }
     this.showLoading(true, "识别网格中...");
-    await new Promise(r => setTimeout(r, 10));
-    
+    await new Promise(r => setTimeout(r, 10));  
     const cols = parseInt(document.getElementById('gridCols').value);
     const rows = parseInt(document.getElementById('gridRows').value);
     if(isNaN(cols) || isNaN(rows) || cols<1 || rows<1){
@@ -643,8 +637,7 @@ const app = {
     offCanvas.width = imgWidth;
     offCanvas.height = imgHeight;
     const ctx = offCanvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    
+    ctx.drawImage(img, 0, 0);  
     const brand = document.getElementById('brandSelect').value;
     const palette = getPaletteByBrand(brand);
     const threshold = parseInt(document.getElementById('whiteThreshold').value);
@@ -673,7 +666,7 @@ const app = {
           sumB += data[i*4+2];
         }
         let r = Math.round(sumR / totalPixels);
-        let g = Math.round(sumG / totalPixels);
+                let g = Math.round(sumG / totalPixels);
         let b = Math.round(sumB / totalPixels);
         const or=r, og=g, ob=b;
         let code = null;
@@ -684,11 +677,11 @@ const app = {
         rowPixels.push({r,g,b,or,og,ob, code});
       }
       newPixels.push(rowPixels);
-    }    
-    if(document.getElementById('flipX').checked){
-      for(let y=0; y<newPixels.length; y++) newPixels[y].reverse();
     }
     
+    if(document.getElementById('flipX').checked){
+      for(let y=0; y<newPixels.length; y++) newPixels[y].reverse();
+          }   
     this.pixels = newPixels;
     this.currentWidth = cols;
     this.currentHeight = rows;
@@ -719,7 +712,7 @@ const app = {
       document.getElementById('b').value = p.b;
       this.selectedCell = {x,y};
     }
-  },
+  }, 
   applyCellEdit(){
     if(!this.pixels.length || !this.selectedCell) { alert("请先在网格上点击一个格子"); return; }
     const r = parseInt(document.getElementById('r').value);
@@ -738,8 +731,7 @@ const app = {
       this.renderCanvas();
       this.updateStat();
     }
-  },
-  
+  },  
   applyBatchReplace(){
     const fromRGB = hexToRgb(document.getElementById('fromColor').value);
     const toRGB = hexToRgb(document.getElementById('toColor').value);
@@ -768,7 +760,7 @@ const app = {
     } else {
       alert("未找到匹配的颜色（可增加容差值）");
     }
-  },
+  },  
   pushHistory(){
     const copy = JSON.parse(JSON.stringify(this.pixels));
     this.history = this.history.slice(0, this.historyIndex+1);
@@ -784,8 +776,7 @@ const app = {
       this.renderCanvas();
       this.updateStat();
     }
-  },
-  
+  }, 
   redo(){
     if(this.historyIndex < this.history.length-1){
       this.historyIndex++;
@@ -794,6 +785,7 @@ const app = {
       this.updateStat();
     }
   },
+  
   updateStat(){
     const stats = this.getColorStats();
     const total = stats.reduce((sum, s) => sum + s.cnt, 0);
@@ -815,7 +807,7 @@ const app = {
       `;
       tbody.appendChild(tr);
     }
-  },
+  },  
   exportFull(){
     if(!this.pixels.length){ alert("没有可导出的图纸"); return; }
     const scale = parseInt(document.getElementById('exportScale').value);
@@ -851,7 +843,7 @@ const app = {
     link.download = `拼豆图纸_${width}x${height}.png`;
     link.href = exportCanvas.toDataURL('image/png');
     link.click();
-  },
+  },  
   exportColorCSV(){
     const stats = this.getColorStats();
     if(stats.length === 0){
@@ -873,17 +865,18 @@ const app = {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  },
-  
+  },  
   loadDemoData(){
     const img = new Image();
     img.onload = () => {
       this.originalImage = img;
+      this.aiProcessed = false;
       this.generateGrid();
     };
     img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ccircle cx='50' cy='50' r='40' fill='%234caf50'/%3E%3C/svg%3E";
   }
 };
+
 window.onload = () => { app.init(); };
 </script>
 </body>
